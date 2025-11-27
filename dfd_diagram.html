@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Natural Language Query Executor - Data Flow Diagram</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .diagram {
+            position: relative;
+            height: 600px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: #fafafa;
+            overflow: hidden;
+        }
+        .entity {
+            position: absolute;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 120px;
+            font-weight: bold;
+        }
+        .external {
+            background: #ffebee;
+            border: 2px solid #f44336;
+            color: #c62828;
+        }
+        .process {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            color: #1565c0;
+        }
+        .datastore {
+            background: #f1f8e9;
+            border: 2px solid #4caf50;
+            color: #2e7d32;
+        }
+        .arrow {
+            position: absolute;
+            background: #666;
+            height: 2px;
+            transform-origin: 0 0;
+        }
+        .arrow-label {
+            position: absolute;
+            background: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            border: 1px solid #ddd;
+        }
+        .arrow-head {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Natural Language Query Executor - Data Flow Diagram</h1>
+        
+        <div class="diagram" id="dfdDiagram">
+            <!-- External Entities -->
+            <div class="entity external" style="top: 50px; left: 50px;">User</div>
+            <div class="entity external" style="top: 400px; left: 50px;">MySQL Database</div>
+            <div class="entity external" style="top: 400px; right: 50px;">Google Gemini AI</div>
+
+            <!-- Processes -->
+            <div class="entity process" style="top: 50px; left: 250px;">Frontend Editor</div>
+            <div class="entity process" style="top: 50px; right: 250px;">Frontend Result</div>
+            <div class="entity process" style="top: 200px; left: 450px;">Backend API</div>
+            <div class="entity process" style="top: 400px; left: 250px;">Frontend Sidebar</div>
+
+            <!-- Data Stores -->
+            <div class="entity datastore" style="top: 300px; right: 450px;">Database Context</div>
+            <div class="entity datastore" style="top: 400px; right: 450px;">Responses Context</div>
+            <div class="entity datastore" style="top: 500px; right: 450px;">History Context</div>
+
+            <!-- Arrows and Labels will be added with JavaScript -->
+        </div>
+
+        <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+            <h3>Legend:</h3>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 20px; height: 20px; background: #ffebee; border: 2px solid #f44336;"></div>
+                    <span>External Entity</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 20px; height: 20px; background: #e3f2fd; border: 2px solid #2196f3;"></div>
+                    <span>Process</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 20px; height: 20px; background: #f1f8e9; border: 2px solid #4caf50;"></div>
+                    <span>Data Store</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function createArrow(x1, y1, x2, y2, label, labelX, labelY) {
+            const diagram = document.getElementById('dfdDiagram');
+            
+            // Calculate angle and length
+            const dx = x2 - x1;
+            const dy = y2 - y1;
+            const length = Math.sqrt(dx * dx + dy * dy);
+            const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+            
+            // Create arrow line
+            const arrow = document.createElement('div');
+            arrow.className = 'arrow';
+            arrow.style.left = x1 + 'px';
+            arrow.style.top = y1 + 'px';
+            arrow.style.width = length + 'px';
+            arrow.style.transform = `rotate(${angle}deg)`;
+            diagram.appendChild(arrow);
+            
+            // Create arrow head
+            const arrowHead = document.createElement('div');
+            arrowHead.className = 'arrow-head';
+            arrowHead.style.left = x2 + 'px';
+            arrowHead.style.top = y2 + 'px';
+            arrowHead.style.borderWidth = '0 8px 12px 8px';
+            arrowHead.style.borderColor = 'transparent transparent transparent #666';
+            arrowHead.style.transform = `rotate(${angle + 90}deg)`;
+            diagram.appendChild(arrowHead);
+            
+            // Create label
+            if (label) {
+                const labelEl = document.createElement('div');
+                labelEl.className = 'arrow-label';
+                labelEl.style.left = labelX + 'px';
+                labelEl.style.top = labelY + 'px';
+                labelEl.textContent = label;
+                diagram.appendChild(labelEl);
+            }
+        }
+
+        // Draw arrows after page loads
+        window.addEventListener('load', function() {
+            // User to Frontend Editor
+            createArrow(120, 75, 250, 75, 'NLQ/SQL Queries', 185, 60);
+            
+            // Frontend Editor to Backend
+            createArrow(320, 75, 450, 200, 'Generate/Execute SQL', 385, 135);
+            
+            // Backend to Google Gemini AI
+            createArrow(500, 230, 850, 430, 'Schema + Query', 675, 330);
+            
+            // Google Gemini AI to Backend
+            createArrow(850, 430, 500, 230, 'Generated SQL/Analysis', 675, 330);
+            
+            // Backend to MySQL
+            createArrow(500, 250, 250, 430, 'SQL Queries', 375, 340);
+            
+            // MySQL to Backend
+            createArrow(250, 430, 500, 250, 'Query Results', 375, 340);
+            
+            // Backend to Frontend Result
+            createArrow(500, 200, 850, 75, 'Results/Data', 675, 135);
+            
+            // Frontend Sidebar to Backend
+            createArrow(320, 430, 450, 250, 'DB/Table Requests', 385, 340);
+            
+            // Backend to Frontend Sidebar
+            createArrow(450, 250, 320, 430, 'DB List/Table Data', 385, 340);
+            
+            // Context data flows
+            createArrow(650, 300, 750, 300, 'Current DB', 700, 285);
+            createArrow(650, 400, 750, 400, 'AI Responses', 700, 385);
+            createArrow(650, 500, 750, 500, 'Query History', 700, 485);
+        });
+    </script>
+</body>
+</html>
